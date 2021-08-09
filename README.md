@@ -6,48 +6,88 @@ Virtual Receptionist for Cisco Deskpro/Webex Board (or Kiosk) that enables a use
 * Maxime Acquatella
 
 ## Solution Components
-* Cisco Telephony (CUCM
-*  Webex Calling)
+* Cisco Telephony (CUCM or Webex Calling)
 *  Python
+*  Flask
 *  Javascript
+
+## Requirements
+
+A dialing endpoint (can be a Cisco Webex Deskpro, a Webex Board or Webex Teams running on a PC - as a Kiosk). There should also be a reachable phone number destination for the called host (extension or Single Number Reach).
+
+Modify the guest_list.json document with the following values:
+
+Invitation format:
+```json
+    "invitation_id": "<add an invitation number>",
+    "name": "<name of visiting guest>",
+    "host": "<name of host>",
+    "extension_to_dial": <dialiable phone number>
+```
+You can also add an operator number in /templates/guest_not_found.html:
+
+```html
+<a href="tel:<operator phone number>" onclick="">Dial Operator</a>
+```
+
+Limitation:
+This sample code allows the user to print a tag using a local printer. 
+In order to print a proper tag, a printing solution has to be selected and added to this code. 
+The printing service is just provided to demonstrate that is possible to add third party printing solutions.
 
 ## Installation/Configuration
 
-This is as a template, project owner to update
+Clone the repo to a folder:
 
-Add any steps needed to install the project so that someone can reproduce the project
+```git clone (link)```
 
-```python
-# Add any settings in environemnt fields or files.  Below is an example:
-# NSO server IP and Username and Password
-NSO_URL = "http://10.10.10.1:8080/"
-NSO_USER = "nso_username"
-NSO_PASSWORD = "nso_password"
-
-# EPNM server IP and port and NSO device name
-EPNM_IP = "10.10.10.2"
-EPNM_PORT = "443"
-EPNM_DEVICE_NAME = "EPNM1"
-
+Create Virtual Environment (recommended), and install requirements.txt:
 ```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+Once the Flask app is up and running, browse: 
+
+Main page:
+
+```http://127.0.0.1:5000/login ```
+
+or 
+
+Admin page (used to add more invitations using the aforementioned format):
+
+```http://127.0.0.1:5000/admin ```
 
 
 ## Usage
 
-This is a template, project owner to update
+At the Main page:
 
-Add any steps needed for someone to run your project.
+```http://127.0.0.1:5000/login ```
 
-To launch an optical service create:
+Add your invitation id in the provided text box:
 
+![/IMAGES/login.png](/IMAGES/login.png)
 
-    $ python create_service.py
+The following screen should appear:
 
+![/IMAGES/dial.png](/IMAGES/dial.png)
 
+Here, you can click the "print" button if a printer is available, or the "dial" button, to dial the host.
+The device should ask you to dial, click to dial and complete the call. 
 
-# Screenshots
+At the Admin page:
 
-![/IMAGES/0image.png](/IMAGES/0image.png)
+```http://127.0.0.1:5000/admin ```
+
+Fill out the boxes with the required info. The code will detect existing invitation numbers (if repeated) and it won't let you progress
+if either of the boxes is not filled with the required information. Click to save, the .json document should be 
+updated automatically with the provided info. 
+
+![/IMAGES/admin_sample.png](/IMAGES/admin_sample.png)
 
 ### LICENSE
 
