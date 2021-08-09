@@ -1,5 +1,6 @@
 # GVE_DevNet_Virtual_Receptionist_CUCM
-Virtual Receptionist for Cisco Deskpro/Webex Board (or Kiosk) that enables a user to login, print a tag and call using the video device. 
+Virtual Receptionist for Cisco Deskpro/Webex Board (or Kiosk using the Webex Teams client) that enables a user to login,
+print a tag and call using the video device. 
 
 
 ## Contacts
@@ -57,37 +58,45 @@ Main page:
 
 or 
 
-Admin page (used to add more invitations using the aforementioned format):
+Admin page (used to add more invitations using the aforementioned invitation format):
 
 ```http://127.0.0.1:5000/admin ```
 
 
 ## Usage
 
+### Option Login
 At the Main page:
 
 ```http://127.0.0.1:5000/login ```
 
-Add your invitation id in the provided text box:
+Add your invitation id in the provided text box and click the "Login" button:
 
 ![/IMAGES/login.png](/IMAGES/login.png)
 
-The following screen should appear:
+The following Dial Form screen should appear:
 
 ![/IMAGES/dial.png](/IMAGES/dial.png)
 
-Here, you can click the "print" button if a printer is available, or the "dial" button, to dial the host.
-The device should ask you to dial, click to dial and complete the call. 
+Here, verify that the Guest Name and Host Name are correct. Click the "Print ID" button if a printer is available, 
+or the "Click here to dial" button, to dial the host.
+The Webex Device or Webex Teams client should ask you to Dial the number, click to dial again to complete the call. 
 
+### Option Admin
 At the Admin page:
 
 ```http://127.0.0.1:5000/admin ```
 
-Fill out the boxes with the required info. The code will detect existing invitation numbers (if repeated) and it won't let you progress
-if either of the boxes is not filled with the required information. Click to save, the .json document should be 
-updated automatically with the provided info. 
+Fill out the boxes with the required info. The code will detect existing invitation numbers (if repeated), and it won't let you progress
+if either of the boxes is not filled with the required information. Click "register" to save, the .json document should be 
+updated automatically with the provided info. To delete the information, modify the .json document. 
 
 ![/IMAGES/admin_sample.png](/IMAGES/admin_sample.png)
+
+Sample invitation format document:
+
+![/IMAGES/sample_json_document.png](/IMAGES/sample_json_document.png)
+
 
 ### LICENSE
 
@@ -102,5 +111,5 @@ Our code of conduct is available [here](CODE_OF_CONDUCT.md)
 See our contributing guidelines [here](CONTRIBUTING.md)
 
 #### DISCLAIMER:
-<b>Please note:</b> This script is meant for demo purposes only. All tools/ scripts in this repo are released for use "AS IS" without any warranties of any kind, including, but not limited to their installation, use, or performance. Any use of these scripts and tools is at your own risk. There is no guarantee that they have been through thorough testing in a comparable environment and we are not responsible for any damage or data loss incurred with their use.
+<b>Please note:</b> This script is meant for demo purposes only. All tools/ scripts in this repo are released for use "AS IS" without any warranties of any kind, including, but not limited to their installation, use, or performance. Any use of these scripts and tools is at your own risk. There is no guarantee that they have been through thorough testing in a comparable environment, and we are not responsible for any damage or data loss incurred with their use.
 You are responsible for reviewing and testing any scripts you run thoroughly before use in any non-testing environment.
