@@ -16,13 +16,11 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, make_response, flash
 import json
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'flash_message'
 
 # Script started
 print('APPLICATION START - VIRTUAL RECEPTIONIST')
-
 
 # Read JSON Guest list (guest_list.json) and return the JSON information as a python dictionary
 def read_list():
@@ -30,7 +28,6 @@ def read_list():
         json_guest_list = json.loads(data.read())
     # print(json_guest_list)
     return json_guest_list
-
 
 # Prepare a list of ONLY the invitation numbers:
 def list_of_invitation_numbers(json_guest_list):
@@ -41,7 +38,51 @@ def list_of_invitation_numbers(json_guest_list):
     print(f'This is the list on invitations: {list_of_invitations}')
     return list_of_invitations
 
+#Covid Screening Questionnaire
+@app.route('/covidscreening', methods=["GET", "POST"])
+def covidscreening():
+    if request.method == 'POST':
+        if request.form.get("No"):
+            return render_template('login.html')
+        elif request.form.get("Yes"):
+            return render_template('do_not_pass.html')
+            # do something else
+    else:
+        return render_template('covid.html')
 
+# Host sets up event and attendee information here
+@app.route('/admin', methods=["GET", "POST"])
+def admin():
+    if request.method == "POST":
+        # Get information of the new invitation from the web form
+        invitation_id = request.form.get('invitation_id')
+        name = request.form.get('name')
+        host = request.form.get('host')
+        extension_to_dial = int(request.form.get('extension_to_dial'))
+        # Validate if invitation is in list of invitations - THIS HAS TO BE ADDED
+        list_of_invitations = list_of_invitation_numbers(read_list())
+        if invitation_id not in list_of_invitations:
+            new_input = [{"invitation_id": invitation_id, "name": name, "host": host, "extension_to_dial": extension_to_dial}]
+            print(f'New Invitation Created: {new_input}')
+
+            # Add new Invitation
+            json_guest_list_int = read_list()
+            new_list = json_guest_list_int + new_input
+            print(f'This is the new FULL dictionary of invitations: {new_list}')
+            with open("guest_list.json", "w") as invite:
+                json.dump(new_list, invite, indent=2)
+                invite.close()
+            # Display alert that data has been added and return admin form again
+            ### Update with tkinter - https://stackoverflow.com/questions/177287/alert-boxes-in-python
+            flash('Invitation Created')
+            return render_template('admin.html')
+        else:
+            flash(f'Invitation {invitation_id} is already in the list, please try a different number')
+            return render_template('admin.html')
+    else:
+        return render_template('admin.html')
+
+# login form, dial to host
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
@@ -92,39 +133,7 @@ def login():
     else:
         return render_template('login.html')
 
-
-@app.route('/admin', methods=["GET", "POST"])
-def admin():
-    if request.method == "POST":
-        # Get information of the new invitation from the web form
-        invitation_id = request.form.get('invitation_id')
-        name = request.form.get('name')
-        host = request.form.get('host')
-        extension_to_dial = int(request.form.get('extension_to_dial'))
-        # Validate if invitation is in list of invitations - THIS HAS TO BE ADDED
-        list_of_invitations = list_of_invitation_numbers(read_list())
-        if invitation_id not in list_of_invitations:
-            new_input = [{"invitation_id": invitation_id, "name": name, "host": host, "extension_to_dial": extension_to_dial}]
-            print(f'New Invitation Created: {new_input}')
-
-            # Add new Invitation
-            json_guest_list_int = read_list()
-            new_list = json_guest_list_int + new_input
-            print(f'This is the new FULL dictionary of invitations: {new_list}')
-            with open("guest_list.json", "w") as invite:
-                json.dump(new_list, invite, indent=2)
-                invite.close()
-            # Display alert that data has been added and return admin form again
-            ### Update with tkinter - https://stackoverflow.com/questions/177287/alert-boxes-in-python
-            flash('Invitation Created')
-            return render_template('admin.html')
-        else:
-            flash(f'Invitation {invitation_id} is already in the list, please try a different number')
-            return render_template('admin.html')
-    else:
-        return render_template('admin.html')
-
-
+# print ID tag
 @app.route('/print_id')
 def print_id():
     # TO DO: ADD CODE TO GET THE NAME AND HOST
@@ -132,6 +141,6 @@ def print_id():
     host = session.get('host')
     return render_template('print_id.html', name=name, host=host)
 
-
+# main application
 if __name__ == '__main__':
     app.run(debug=False, use_reloader=True)
