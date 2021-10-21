@@ -43,6 +43,10 @@ Clone the repo to a folder:
 
 ```git clone (link)```
 
+Find your Virtual_Receptionist_kiosk file:
+
+```cd Virtual_Receptionist_kiosk```
+
 Create Virtual Environment (recommended), and install requirements.txt:
 ```
 python -m venv venv
@@ -63,6 +67,11 @@ Admin page (used to add more invitations using the aforementioned invitation for
 
 ```http://127.0.0.1:5000/admin ```
 
+If you plan on running the web app on your desk pro, open a new terminal window and use ngrok:
+
+```ngrok http 5000```
+
+On your desk pro, go to settings, web applications and type the address provided by ngrok.
 
 ## Usage
 
