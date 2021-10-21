@@ -1,13 +1,14 @@
-# GVE_DevNet_Virtual_Receptionist_CUCM
+# Virtual_Receptionist_Kiosk
 Virtual Receptionist for Cisco Deskpro/Webex Board (or Kiosk using the Webex Teams client) that enables a user to login,
 print a tag and call using the video device. 
 
 
-## Contacts
+## Authors
 * Maxime Acquatella
+* Nour Zourob
 
 ## Solution Components
-* Cisco Telephony (CUCM or Webex Calling)
+*  Cisco Telephony (CUCM or Webex Calling)
 *  Python
 *  Flask
 *  Javascript
@@ -54,7 +55,7 @@ Once the Flask app is up and running, browse:
 
 Main page:
 
-```http://127.0.0.1:5000/login ```
+```http://127.0.0.1:5000/covidscreening ```
 
 or 
 
@@ -68,7 +69,11 @@ Admin page (used to add more invitations using the aforementioned invitation for
 ### Option Login
 At the Main page:
 
-```http://127.0.0.1:5000/login ```
+```http://127.0.0.1:5000/covidscreening ```
+
+Answer the covid screening questions in the window:
+
+![/IMAGES/covidscreening.png](/IMAGES/covidscreening.png)
 
 Add your invitation id in the provided text box and click the "Login" button:
 
